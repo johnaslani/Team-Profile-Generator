@@ -1,12 +1,16 @@
 // TODO: Include packages needed for this application
-import inquirer from "inquirer";
-import fs from "fs";
+// import inquirer from "inquirer";
+// import fs from "fs";
 // const inquirer = require("inquirer");
 // const fs = require("fs");
-
+const inquirer = require("inquirer");
+const fs = require("fs");
 const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const generateHTML = require("./src/generateHTML");
 
-import { generateMarkdown } from "./utils/generateMarkdown.js";
+// import { generateMarkdown } from "./utils/generateMarkdown.js";
 //import { generateMarkdown } from "./utils/generateMarkdown";
 
 // let role == "manager"
@@ -15,6 +19,22 @@ const questionsManager = [
     type: "input",
     name: "office",
     message: `What is the office number?`,
+  },
+];
+
+const questionsEngineer = [
+  {
+    type: "input",
+    name: "github",
+    message: `What is the GitHub username?`,
+  },
+];
+
+const questionsIntern = [
+  {
+    type: "input",
+    name: "school",
+    message: `What is the schoole name?`,
   },
 ];
 
@@ -28,7 +48,7 @@ const questionsGeneral = [
   {
     type: "input",
     name: "employeeID",
-    message: `Where is employee's employee ID?`,
+    message: `What is employee's ID?`,
   },
   {
     type: "input",
@@ -39,9 +59,11 @@ const questionsGeneral = [
 
 const questionMenu = [
   {
-    type: "input",
+    type: "list",
     name: "role",
-    message: `What is the role of the employee?`,
+    message: `What do you want to do next?`,
+    // message: `What is the role of the employee?`,
+    choices: ["Add Intenrn", "Add Engineer", "Finish"],
   },
 ];
 // const questionSpecial = [
@@ -91,22 +113,48 @@ function promptManager() {
 function promptMenu() {
   inquirer.prompt(questionMenu).then((answerMenu) => {
     switch (answerMenu.role) {
-      case "finish":
-        generateHTML();
+      case "Finish":
+        writeToFileSync();
         break;
-      case "engineer":
+      case "Add Engineer":
         promtEngineer();
         break;
-      case "intern":
+      case "Add Intenrn":
         promtIntern();
         break;
     }
   });
 }
 
-function promtEngineer() {}
+function promtEngineer() {
+  inquirer.prompt(questionsGeneral).then((answersGeneral) => {
+    inquirer.prompt(questionsEngineer).then((answerEngineer) => {
+      const engineer = new Engineer(
+        answersGeneral.name,
+        answersGeneral.employeeID,
+        answersGeneral.email,
+        answerEngineer.github
+      );
+      team.push(engineer);
+      promptMenu();
+    });
+  });
+}
 
-function promtIntern() {}
+function promtIntern() {
+  inquirer.prompt(questionsGeneral).then((answersGeneral) => {
+    inquirer.prompt(questionsIntern).then((answerIntern) => {
+      const intern = new Intern(
+        answersGeneral.name,
+        answersGeneral.employeeID,
+        answersGeneral.email,
+        answerIntern.school
+      );
+      team.push(intern);
+      promptMenu();
+    });
+  });
+}
 
 // const template = require("./template.js")
 
@@ -149,17 +197,29 @@ function promtIntern() {}
 // To generate HTML page
 
 // TODO: Create a function to write README file
-function writeToFileSync(fileName, data) {}
+function writeToFileSync() {
+  // inquirer.prompt(questions).then((answers) => {
+  //   const htmlCardContent = generateHTML(answers);
+  //   console.log(htmlCardContent);
+  fs.writeFileSync(
+    "./dist/team.html",
+    generateHTML(team),
+
+    (err) =>
+      err ? console.log(err) : console.log("Successfully created Team.html!")
+  );
+  // });
+}
 
 // TODO: Create a function to initialize app
 // function init() {
-//   inquirer.prompt(questions).then((answers) => {
-//     const htmlCardContent = generateHTML(answers);
-//     console.log(htmlCardContent);
-//     fs.writeFileSync("Team.html", htmlPageContent, (err) =>
-//       err ? console.log(err) : console.log("Successfully created Team.html!")
-//     );
-//   });
+// inquirer.prompt(questions).then((answers) => {
+//   const htmlCardContent = generateHTML(answers);
+//   console.log(htmlCardContent);
+//   fs.writeFileSync("Team.html", htmlPageContent, (err) =>
+//     err ? console.log(err) : console.log("Successfully created Team.html!")
+//   );
+// });
 // }
 
 promptManager();
