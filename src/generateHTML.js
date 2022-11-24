@@ -6,7 +6,7 @@ function assesPosition(member) {
     return `<h4> ${member.office}</h4>`;
   }
   if (member.getRole() == "Engineer") {
-    return `<h4>Github: <a href=" https://github.com/"${member.github}>${member.github}</a></h4>`;
+    return `<h4>Github: <a href=" https://github.com/${member.github}">${member.github}</a></h4>`;
   }
   if (member.getRole() == "Intern") {
     return `<h4> ${member.school}</h4>`;
