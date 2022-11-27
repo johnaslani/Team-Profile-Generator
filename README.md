@@ -23,7 +23,7 @@ This program licensed under [MIT](https://img.shields.io/badge/license-MIT-blue)
 
 ## Questions
 
-For further information see [my GitHub](https://github.com/johnaslani) or [Weather-Dashboard](https://github.com/johnaslani/Team-Profile-Generator)
+For further information see [my GitHub](https://github.com/johnaslani) or [Team-Profile-Generator](https://github.com/johnaslani/Team-Profile-Generator)
 
 
 Should you have any questions, please reach me at [aslani.john@gmail.com](mailto:aslani.john@gmail.com)
